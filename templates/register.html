@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+    注册
+{% endblock title %}
+{% block header %}
+{% endblock header %}
+{% block body %}
+    <div class="row mt-4">
+        <div class="col-sm"></div>
+        <div class="col-sm">
+            <form  method="POST" action="{{ url_for('user.register') }}">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email"
+                           class="form-control"
+                           name="email"
+                           aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label>验证码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="captcha">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary form-control" type="button">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" class="form-control" name="username">
+                        {# <small id="emailHelp" class="form-text text-muted">我们会将你的邮箱用于非法用途</small> #}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" class="form-control" name="password_confirm">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">立即登录</button>
+            </form>
+        </div>
+        <div class="col-sm"></div>
+    </div>
+{% endblock body %}
