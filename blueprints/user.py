@@ -7,7 +7,7 @@ from flask_mail import Message
 from exts import mail, db
 import string
 from models import EmailCaptchaModel, UserModel
-
+from werkzeug.security import generate_password_hash
 from .forms import RegisterForm
 
 bp = Blueprint("user", __name__, url_prefix="/user")
@@ -29,7 +29,9 @@ def register():
             username = form.username.data
             email = form.email.data
             password = form.password.data
-            user = UserModel(username=username, email=email, password=password)
+            hash_password=generate_password_hash(password)
+
+            user = UserModel(username=username, email=email, password=hash_password)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('user.login'))
