@@ -1,8 +1,10 @@
 
+# from crypt import methods
 from datetime import datetime
 import email
+import json
 import random
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from flask_mail import Message
 from exts import mail, db
 import string
@@ -18,9 +20,9 @@ def login():
     return render_template('login.html')
 
 
-@bp.route("/register",methods=['GET','POST'])
+@bp.route("/register", methods=['GET', 'POST'])
 def register():
-    if request.method=='GET':
+    if request.method == 'GET':
         return render_template('register.html')
     else:
         print(request.args)
@@ -29,9 +31,10 @@ def register():
             username = form.username.data
             email = form.email.data
             password = form.password.data
-            hash_password=generate_password_hash(password)
+            hash_password = generate_password_hash(password)
 
-            user = UserModel(username=username, email=email, password=hash_password)
+            user = UserModel(username=username, email=email,
+                             password=hash_password)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('user.login'))
@@ -39,12 +42,13 @@ def register():
             return redirect(url_for('user.register'))
 
 
-@bp.route("/captcha")
+@bp.route("/captcha", methods=['POST'])
 def get_captcha():
     letters = string.ascii_letters+string.digits
     captcha = "".join(random.sample(letters, 4))
-
-    email = request.args.get('email')
+    # get用args post用forms
+    # email = request.args.get('email')
+    email = request.form.get('email')
 
     if email:
         message = Message(subject="test", recipients=[
@@ -60,6 +64,6 @@ def get_captcha():
             captcha_model = EmailCaptchaModel(email=email, captcha=captcha)
             db.session.add(captcha_model)
             db.session.commit()
-        return "success"
+        return jsonify({"code": 200})
     else:
-        return "没有邮箱"
+        return jsonify({"code": 400, "message": "请先传递邮箱"})
