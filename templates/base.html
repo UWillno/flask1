@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>
-            {% block title %}
-            {% endblock title %}
-        </title>
-        <link rel="stylesheet"
-              href="{{ url_for('static',filename='bootstrap/bootstrap@4.6.1.min.css') }}">
-        {% block header %}
-        {% endblock header %}
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap/bootstrap@4.6.1.min.css') }}">
+    {% block header %}
+    {% endblock header %}
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Flask</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('qa.public_question') }}">发布问答</a>
+                    </li>
+                    <li>
+                        <form class="form-inline my-2 my-lg-0 ml-2">
+                            <input class="form-control mr-sm-2" type="search" placeholder="关键字" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="pull-right" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user.logout') }}">退出</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user.login') }}">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user.register') }}">注册</a>
+                    </li>
+                    {% endif %}
+
+
+
+
+                </ul>
+            </div>
+        </nav>
+        <!-- Content here -->
         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Flask</a>
-                <button class="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">发布问答</a>
-                        </li>
-                        <li>
-                            <form class="form-inline my-2 my-lg-0 ml-2">
-                                <input class="form-control mr-sm-2"
-                                       type="search"
-                                       placeholder="关键字"
-                                       aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pull-right" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('user.login') }}">登录</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('user.register') }}">注册</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <!-- Content here -->
-            <div  class="container">
             {% block body %}
 
             {% endblock body %}
-            </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

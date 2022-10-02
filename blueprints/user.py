@@ -1,23 +1,43 @@
-
-# from crypt import methods
 from datetime import datetime
 import email
 import json
 import random
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, flash
 from flask_mail import Message
 from exts import mail, db
 import string
 from models import EmailCaptchaModel, UserModel
-from werkzeug.security import generate_password_hash
-from .forms import RegisterForm
+from werkzeug.security import generate_password_hash, check_password_hash
+from .forms import LoginForm, RegisterForm
 
 bp = Blueprint("user", __name__, url_prefix="/user")
 
 
-@bp.route("/login")
+@bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('user.login'))
+
+
+@bp.route("/login", methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        form = LoginForm(request.form)
+        if form.validate():
+            email = form.email.data
+            password = form.password.data
+            user = UserModel.query.filter_by(email=email).first()
+            if user and check_password_hash(user.password, password):
+                session['user_id'] = user.id
+                return redirect("/")
+            else:
+                flash("邮箱或密码错误！")
+                return redirect(url_for('user.login'))
+        else:
+            flash("邮箱或密码格式错误！")
+            return redirect(url_for('user.login'))
 
 
 @bp.route("/register", methods=['GET', 'POST'])
