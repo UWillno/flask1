@@ -11,7 +11,7 @@
 <div class="row mt-4">
     <div class="col-sm"></div>
     <div class="col-sm">
-        <form method="POST" action="{{ url_for('user.register') }}">
+        <form method="POST" action="{{ url_for('user.register') }}" style="opacity:0.8;">
             <div class="form-group">
                 <label>邮箱</label>
                 <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
@@ -38,7 +38,12 @@
                 <label>确认密码</label>
                 <input type="password" class="form-control" name="password_confirm">
             </div>
-            <button type="submit" class="btn btn-primary btn-block">立即登录</button>
+            {% for message in get_flashed_messages() %} 
+            <div class="form-group">
+                <div class="text-danger">{{ message }}</div>
+            </div>  
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">立即注册</button>
         </form>
     </div>
     <div class="col-sm"></div>

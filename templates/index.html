@@ -6,5 +6,35 @@
 
 {% endblock header %}
 {% block body %}
-<h1>首页</h1>
+<div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col-8 mt-4" style="opacity:0.8;">
+        <h1 style="text-align: center;">问答列表</h1>
+        {% if questions != [] %}
+        {% for question in questions %}
+        <div class="list-group mt-4">
+            <a href="{{ url_for('qa.question_detail',question_id=question.id) }}"
+                class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1" style="color: blue;">{{ question.title}}</h5>
+                    <small style="color: red;">{{ question.create_time }}</small>
+                </div>
+                <p class="mb-1">{{ question.content }}</p>
+                <small style="color: green;">{{ question.author.username }}</small>
+            </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h4 style="text-align: center;">暂无问答</h4>
+        {% endif %}
+    </div>
+    <div class="col">
+
+    </div>
+
+</div>
+
+
 {% endblock body %}

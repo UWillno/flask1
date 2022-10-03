@@ -1,5 +1,5 @@
 import wtforms
-from wtforms.validators import email, length, EqualTo
+from wtforms.validators import email, length, EqualTo,InputRequired
 from models import EmailCaptchaModel, UserModel
 
 
@@ -38,3 +38,6 @@ class RegisterForm(wtforms.Form):
 class QuestionForm(wtforms.Form):
     title = wtforms.StringField(validators=[length(min=3, max=30)])
     content = wtforms.StringField(validators=[length(min=5, max=200)])
+
+class AnswerForm(wtforms.Form):
+    content = wtforms.StringField(validators=[InputRequired()])
